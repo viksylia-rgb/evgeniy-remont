@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-ink font-sans text-paper antialiased;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  ::selection {
+    background: #c9a968;
+    color: #0b0b0d;
+  }
+  :focus-visible {
+    outline: 2px solid #d8ba7a;
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Внешний контейнер с боковыми полями, учитывающими «чёлку» телефона */
+  .container-site {
+    @apply mx-auto w-full max-w-site;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 768px) {
+    .container-site {
+      padding-left: max(40px, env(safe-area-inset-left, 0px));
+      padding-right: max(40px, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-label text-gold;
+  }
+
+  .h-display {
+    @apply font-display font-medium uppercase leading-[1.02] tracking-[0.01em];
+    overflow-wrap: break-word; /* на очень узких экранах длинное слово переносится, а не вылезает за край */
+  }
+
+  /* Кнопки */
+  .btn {
+    @apply inline-flex min-h-[52px] items-center justify-center gap-3 px-7 text-[13px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 ease-arch;
+  }
+  .btn-gold {
+    @apply btn bg-gold text-ink hover:bg-gold-light;
+  }
+  .btn-line {
+    @apply btn border border-paper/25 text-paper hover:border-gold hover:text-gold-light;
+  }
+
+  /* Тонкая золотая линия, которая «прорисовывается» при наведении */
+  .gold-rule {
+    @apply relative block h-px w-full overflow-hidden bg-slate;
+  }
+  .gold-rule::after {
+    content: '';
+    @apply absolute inset-y-0 left-0 w-full origin-left scale-x-0 bg-gold transition-transform duration-700 ease-arch;
+  }
+  .group:hover .gold-rule::after,
+  .group:focus-within .gold-rule::after {
+    @apply scale-x-100;
+  }
+
+  .field {
+    @apply w-full border-0 border-b border-slate bg-transparent px-0 py-3 text-[16px] text-paper placeholder:text-mist/50 transition-colors focus:border-gold focus:outline-none focus:ring-0;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
